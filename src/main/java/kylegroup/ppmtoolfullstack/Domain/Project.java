@@ -1,6 +1,10 @@
 package kylegroup.ppmtoolfullstack.Domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -8,9 +12,14 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "project name should not be empty")
     private String projectName;
+    @NotBlank(message = "projectIdentifier should not be empty")
+    @Size(min = 4,max = 100, message = "please use 4-100 projectIdentifier")
+    @Column(unique = true, updatable = false)
     private String projectIdentifier;
     private String description;
+    @JsonFormat(pattern = "yyyy-mm-dd")
     private Date start_Date;
     private Date end_Date;
 
@@ -93,3 +102,4 @@ public class Project {
         this.updated_At = new Date();
     }
 }
+
