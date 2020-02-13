@@ -1,4 +1,4 @@
-package src.main.java.kylegroup.ppmtoolfullstack.Domain;
+package kylegroup.ppmtoolfullstack.Domain;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -7,7 +7,7 @@ import java.util.Date;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String projectName;
     private String projectIdentifier;
     private String description;
@@ -20,11 +20,11 @@ public class Project {
     public Project() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
