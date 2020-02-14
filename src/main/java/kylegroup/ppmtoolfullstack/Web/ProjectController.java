@@ -1,6 +1,7 @@
 package kylegroup.ppmtoolfullstack.Web;
 
 import kylegroup.ppmtoolfullstack.Domain.Project;
+import kylegroup.ppmtoolfullstack.Service.MapValidationErrorService;
 import kylegroup.ppmtoolfullstack.Service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,16 +21,15 @@ import java.util.HashMap;
 public class ProjectController {
     @Autowired
     private ProjectService service;
+    @Autowired
+    private MapValidationErrorService validationService;
 
     @PostMapping
     public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
-        HashMap<String, String> errorMap = new HashMap<String, String>();
-        for(FieldError error: result.getFieldErrors()){
-            errorMap.put(error.getField(), error.getDefaultMessage());
-        }
-        if(result.hasErrors()){
-            return new ResponseEntity<HashMap<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
-        }
+        ResponseEntity<?> errorMap = validationService.MapValidationService(result);
+        if(errorMap != null)
+            return errorMap;
+
         Project project1 = service.saveOrUpdateProject(project);
         return new ResponseEntity<Project>(project, HttpStatus.CREATED);
     }
